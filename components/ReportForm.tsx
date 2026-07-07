@@ -1,15 +1,22 @@
-import { upsertTodayReport } from "@/app/dashboard/actions";
+"use client";
+
+import { useActionState } from "react";
+import { upsertTodayReport, type ReportFormState } from "@/app/dashboard/actions";
 import type { DailyReport, ReportStatus } from "@/lib/types";
 
 const statusOptions: ReportStatus[] = ["進行中", "已完成", "延期", "需協助"];
+const initialState: ReportFormState = {};
 
 export function ReportForm({ today, report }: { today: string; report?: DailyReport | null }) {
+  const [state, formAction, pending] = useActionState(upsertTodayReport, initialState);
+
   return (
-    <form action={upsertTodayReport} className="card grid">
+    <form action={formAction} className="card grid">
       <div>
         <h2>今日工作回報</h2>
         <p className="muted">今天已填可直接更新；系統會依日期覆蓋同一天的回報。</p>
       </div>
+      {state.error ? <p className="error-message" role="alert">{state.error}</p> : null}
       <div className="grid grid-2">
         <label>日期<input name="report_date" type="date" defaultValue={report?.report_date ?? today} required /></label>
         <label>狀態<select name="status" defaultValue={report?.status ?? "進行中"}>{statusOptions.map((s) => <option key={s}>{s}</option>)}</select></label>
@@ -22,7 +29,7 @@ export function ReportForm({ today, report }: { today: string; report?: DailyRep
       </div>
       <label>遇到問題<textarea name="blockers" placeholder="沒有問題可留空" defaultValue={report?.blockers ?? ""} /></label>
       <label>備註<textarea name="notes" defaultValue={report?.notes ?? ""} /></label>
-      <button type="submit">儲存今日回報</button>
+      <button type="submit" disabled={pending}>{pending ? "儲存中..." : "儲存今日回報"}</button>
     </form>
   );
 }

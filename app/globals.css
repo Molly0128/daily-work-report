@@ -12,8 +12,10 @@ label { display:grid; gap:7px; font-weight:700; font-size:14px; }
 input, textarea, select { width:100%; border:1px solid var(--line); border-radius:12px; padding:11px 12px; font:inherit; background:white; color:var(--text); }
 textarea { min-height:96px; resize:vertical; }
 button, .button { border:0; border-radius:12px; padding:11px 16px; background:var(--brand); color:white; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; }
+button:disabled { cursor:not-allowed; opacity:.65; }
 .secondary { background:#eef2ff; color:#1e40af; }
 .danger { background:#fff1f2; color:var(--danger); }
+.error-message { border:1px solid #fecdd3; border-radius:12px; background:#fff1f2; color:var(--danger); padding:12px 14px; font-weight:700; }
 .muted { color:var(--muted); }
 .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:14px; }
 table { width:100%; border-collapse:collapse; min-width:900px; background:white; }
