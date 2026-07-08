@@ -16,6 +16,7 @@ button:disabled { cursor:not-allowed; opacity:.65; }
 .secondary { background:#eef2ff; color:#1e40af; }
 .danger { background:#fff1f2; color:var(--danger); }
 .error-message { border:1px solid #fecdd3; border-radius:12px; background:#fff1f2; color:var(--danger); padding:12px 14px; font-weight:700; }
+.success-message { border:1px solid #99f6e4; border-radius:12px; background:#f0fdfa; color:var(--ok); padding:12px 14px; font-weight:700; }
 .muted { color:var(--muted); }
 .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:14px; }
 table { width:100%; border-collapse:collapse; min-width:900px; background:white; }
@@ -23,5 +24,7 @@ th, td { padding:12px; border-bottom:1px solid var(--line); text-align:left; ver
 th { font-size:13px; color:var(--muted); background:#fafbff; }
 .badge { display:inline-flex; border-radius:999px; padding:5px 10px; background:#eef2ff; color:#1e40af; font-weight:700; font-size:12px; }
 .stack { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.checkbox { align-content:end; grid-template-columns:auto 1fr; align-items:center; }
+.checkbox input { width:auto; }
 .stat { font-size:28px; font-weight:800; }
 @media (max-width: 760px) { .container { padding:14px; } .header { align-items:flex-start; flex-direction:column; } .grid-2, .grid-3 { grid-template-columns:1fr; } .card { padding:16px; } }

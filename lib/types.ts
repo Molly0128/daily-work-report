@@ -6,6 +6,8 @@ export type Profile = {
   full_name: string | null;
   email: string | null;
   role: UserRole;
+  active: boolean;
+  created_at?: string;
 };
 
 export type DailyReport = {

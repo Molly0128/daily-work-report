@@ -19,7 +19,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  const { data: profile } = await supabase.from("profiles").select("id, full_name, email, role").eq("id", user.id).single<Profile>();
+  const { data: profile } = await supabase.from("profiles").select("id, full_name, email, role, active, created_at").eq("id", user.id).single<Profile>();
   const role = profile?.role ?? "member";
   const params = await searchParams;
   const selectedDate = params.date || today();
@@ -40,13 +40,13 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
     );
   }
 
-  const { data: members } = await supabase.from("profiles").select("id, full_name, email, role").order("full_name").returns<Profile[]>();
+  const { data: members } = await supabase.from("profiles").select("id, full_name, email, role, active, created_at").order("full_name", { ascending: true, nullsFirst: false }).order("email", { ascending: true }).returns<Profile[]>();
   let query = supabase.from("daily_reports").select("*, profiles(full_name, email)").eq("report_date", selectedDate).order("report_date", { ascending: false });
   if (params.user) query = query.eq("user_id", params.user);
   if (params.status) query = query.eq("status", params.status);
   const { data: reports } = await query.returns<DailyReport[]>();
   const filledIds = new Set((reports ?? []).map((r) => r.user_id));
-  const teamMembers = (members ?? []).filter((m) => m.role !== "admin");
+  const teamMembers = (members ?? []).filter((m) => m.role === "member" && m.active);
   const filled = teamMembers.filter((m) => filledIds.has(m.id));
   const missing = teamMembers.filter((m) => !filledIds.has(m.id));
 
@@ -77,7 +77,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
 }
 
 function Header({ profile }: { profile: Profile | null }) {
-  return <header className="header"><div><h1>每日工作進度回報系統</h1><p className="muted">{displayName(profile)}・{profile?.role === "admin" ? "管理者" : "成員"}</p></div><form action="/auth/logout" method="post"><button className="danger" type="submit">登出</button></form></header>;
+  return <header className="header"><div><h1>每日工作進度回報系統</h1><p className="muted">{displayName(profile)}・{profile?.role === "admin" ? "管理者" : "成員"}</p></div><div className="stack"><a className="button secondary" href="/account">帳號設定</a>{profile?.role === "admin" ? <a className="button secondary" href="/people">人員管理</a> : null}<form action="/auth/logout" method="post"><button className="danger" type="submit">登出</button></form></div></header>;
 }
 function Stat({ label, value }: { label: string; value: number }) { return <div className="card"><div className="muted">{label}</div><div className="stat">{value}</div></div>; }
 function PeopleList({ title, people }: { title: string; people: Profile[] }) { return <section className="card"><h3>{title}</h3><div className="stack">{people.length ? people.map((p) => <span className="badge" key={p.id}>{displayName(p)}</span>) : <span className="muted">無</span>}</div></section>; }
