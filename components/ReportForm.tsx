@@ -17,6 +17,7 @@ export function ReportForm({ today, report }: { today: string; report?: DailyRep
         <p className="muted">今天已填可直接更新；系統會依日期覆蓋同一天的回報。</p>
       </div>
       {state.error ? <p className="error-message" role="alert">{state.error}</p> : null}
+      {state.success ? <p className="success-message" role="status">{state.success}</p> : null}
       <div className="grid grid-2">
         <label>日期<input name="report_date" type="date" defaultValue={report?.report_date ?? today} required /></label>
         <label>狀態<select name="status" defaultValue={report?.status ?? "進行中"}>{statusOptions.map((s) => <option key={s}>{s}</option>)}</select></label>
@@ -24,10 +25,10 @@ export function ReportForm({ today, report }: { today: string; report?: DailyRep
       <label>今日工作項目<textarea name="work_items" required defaultValue={report?.work_items ?? ""} /></label>
       <label>今日完成內容<textarea name="completed_content" required defaultValue={report?.completed_content ?? ""} /></label>
       <div className="grid grid-2">
-        <label>進度百分比<input name="progress_percent" type="number" min="0" max="100" defaultValue={report?.progress_percent ?? 0} required /></label>
+        <label>進度百分比<input name="progress" type="number" min="0" max="100" defaultValue={report?.progress ?? 0} required /></label>
         <label>明日預計工作<textarea name="tomorrow_plan" defaultValue={report?.tomorrow_plan ?? ""} /></label>
       </div>
-      <label>遇到問題<textarea name="blockers" placeholder="沒有問題可留空" defaultValue={report?.blockers ?? ""} /></label>
+      <label>遇到問題<textarea name="issue" placeholder="沒有問題可留空" defaultValue={report?.issue ?? ""} /></label>
       <label>備註<textarea name="notes" defaultValue={report?.notes ?? ""} /></label>
       <button type="submit" disabled={pending}>{pending ? "儲存中..." : "儲存今日回報"}</button>
     </form>
