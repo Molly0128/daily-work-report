@@ -28,3 +28,9 @@ th { font-size:13px; color:var(--muted); background:#fafbff; }
 .checkbox input { width:auto; }
 .stat { font-size:28px; font-weight:800; }
 @media (max-width: 760px) { .container { padding:14px; } .header { align-items:flex-start; flex-direction:column; } .grid-2, .grid-3 { grid-template-columns:1fr; } .card { padding:16px; } }
+.grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+.inline-form { display:grid; gap:8px; min-width:520px; }
+.inline-form .error-message, .inline-form .success-message { margin:0; padding:8px; }
+small { color:var(--muted); font-weight:400; }
+code { white-space:pre-wrap; word-break:break-word; }
+@media (max-width: 760px) { .grid-4 { grid-template-columns:1fr; } .inline-form { min-width:420px; } }

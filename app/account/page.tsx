@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
 import { PasswordForm } from "@/components/PasswordForm";
 import { createServerSupabaseClient } from "@/lib/supabase";
@@ -14,11 +16,11 @@ export default async function AccountPage() {
   return <main className="container grid">
     <header className="header">
       <div><h1>帳號設定</h1><p className="muted">查看個人資料並更新登入密碼。</p></div>
-      <nav className="stack"><a className="button secondary" href="/dashboard">回儀表板</a>{profile?.role === "admin" ? <a className="button secondary" href="/people">人員管理</a> : null}</nav>
+      <nav className="stack"><a className="button secondary" href="/dashboard">回儀表板</a>{profile?.role === "admin" || profile?.role === "instructor" ? <a className="button secondary" href="/people">人員管理</a> : null}</nav>
     </header>
     <section className="card grid">
       <h2>個人資料</h2>
-      <div className="grid grid-2"><label>姓名<input value={displayName(profile)} readOnly /></label><label>Email<input value={profile?.email ?? user.email ?? ""} readOnly /></label></div>
+      <div className="grid grid-3"><label>姓名<input value={displayName(profile)} readOnly /></label><label>Email<input value={profile?.email ?? user.email ?? ""} readOnly /></label><label>角色<input value={profile?.role ?? "member"} readOnly /></label></div>
     </section>
     <PasswordForm />
   </main>;

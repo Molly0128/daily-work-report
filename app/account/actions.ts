@@ -1,5 +1,6 @@
 "use server";
 
+import { writeAuditLog } from "@/lib/audit";
 import { createServerSupabaseClient } from "@/lib/supabase";
 
 export type PasswordFormState = { error?: string; success?: string };
@@ -16,5 +17,6 @@ export async function updatePassword(_prev: PasswordFormState, formData: FormDat
 
   const { error } = await supabase.auth.updateUser({ password });
   if (error) return { error: `修改密碼失敗：${error.message}` };
+  await writeAuditLog({ actor_user_id: user.id, actor_email: user.email, action: "change_password", target_user_id: user.id, target_email: user.email });
   return { success: "密碼已成功更新。" };
 }
